@@ -17,9 +17,14 @@ import static org.testng.Assert.*;
 public class createEditDeleteChallenge {
     static WebDriver driver;
     static WebDriverWait wait;
+
+    //variables
     String ChallengeTitle = "ThisIsATestTitle";
     String ChallangeDesc = "ThisIsATestDesc";
     String ChallangeImage = "https://styles.redditmedia.com/t5_2r5i1/styles/communityIcon_x4lqmqzu1hi81.jpg";
+
+
+    //opens the browser maximized and inject cookies to bypass the 2-factor authentication for BoostApp admin interface.
     @Given("The admin is on the landing page")
     public void The_admin_is_on_the_landing_page() throws Exception {
         driver = new ChromeDriver();
@@ -32,6 +37,8 @@ public class createEditDeleteChallenge {
         addCookies.addAllCookies(driver);
         driver.navigate().refresh();
     }
+
+    //This step will press the challenge button in the top menu, including an assert to verify the step.
     @Given("The admin press challenge button")
     public void the_admin_press_challenge_button() {
         System.out.println("Press challenge button");
@@ -40,6 +47,7 @@ public class createEditDeleteChallenge {
         assertEquals(actualURL, "https://nexerboostappadmin.azurewebsites.net/challenge");
         System.out.println("Test passed - URL Confirmed\n");
     }
+    // This step will press the "create new challenge" button including an assert to verify that the pop-up window is showing.
     @Given("The admin press create new challenge button")
     public void the_admin_press_create_new_challenge_button() {
         System.out.println("Press 'create new challenge' button");
@@ -47,6 +55,8 @@ public class createEditDeleteChallenge {
         assertTrue(driver.getPageSource().contains("CREATE NEW CHALLENGE"));
         System.out.println("Test passed - POP-UP showing\n");
     }
+
+    // This step will fill out predetermined text into the title, description and image url fields, assert after each step to make sure the information is entered.
     @Given("The admin fills out challenge information")
     public void the_admin_fills_out_challenge_information() {
         System.out.println("Fill out challenge title, description and image url");
@@ -66,7 +76,7 @@ public class createEditDeleteChallenge {
         System.out.println("Test passed - Challenge information injected\n");
 
     }
-
+    // This step will press the "Save" button after the information is injected into the fields, assert to make sure the text "Challenge has been saved successfully" is saved.
     @When("Admin then press Save button")
     public void admin_then_press_save_button() throws Exception {
         System.out.println("Press 'Save' button");
@@ -75,7 +85,7 @@ public class createEditDeleteChallenge {
         assertTrue(driver.getPageSource().contains("Challenge has been saved successfully!"));
         System.out.println("Test passed - Challenge successfully saved\n");
     }
-
+    // This step enters the previously saved challenge and edits the information.
     @And("Admin edit the challenge")
     public void admin_Edit_The_Challenge() throws Exception {
         System.out.println("Edit the challenge\n");
@@ -93,8 +103,10 @@ public class createEditDeleteChallenge {
         driver.findElement(By.xpath("//span[contains(@class, 'mat-button-wrapper') and text()=' Yes']")).click();
         driver.findElement(By.xpath("//span[contains(@class, 'mat-button-wrapper') and text()=' OK']")).click();
         //insert assert here
-    }
 
+
+    }
+    // This step will press edit > Delete > Yes > OK, assert to make sure the Description for the challenge isn't showing anywhere on the page to verify the challenge is deleted.
     @Then("Admin delete the challenge")
     public void challenge_Should_Be_Deleted() {
         System.out.println("Delete the challenge");
